@@ -1,18 +1,16 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Text} from 'react-native';
 
-console.error = (error) => error.apply;
+console.error = error => error.apply;
 
-export default function App(){
-  const textElement = React.createElement(Text, null, '히샬리소')
-  return textElement
+//DOM 객체를 네이티브로 넘긴다.
+export default function App() {
 
+//가상 DOM 객체 생성
+  const textElement = React.createElement(
+    Text,
+    null,
+    '가상 DOM 객체의 텍스트',
+  );
+  return textElement;
 }
