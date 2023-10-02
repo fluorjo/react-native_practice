@@ -5,21 +5,22 @@ import React from 'react';
 
 import {Text, SafeAreaView} from 'react-native';
 
-import {LogBox} from 'react-native';
+import {LogBox, View} from 'react-native';
+
+
+console.error = error => error.apply;
+
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['Property ']);
+LogBox.ignoreLogs(['it is un']);
+
 
 export default function App() {
-  console.error = error => error.apply;
-  LogBox.ignoreAllLogs();
 
-  const textElement = React.createElement(Text, null, '가상 DOM 객체');
-
-  const virtualDOM = (
-    <SafeAreaView>
-      <Text>텍스트 1</Text>
-      <Text>텍스트 2</Text>
-      <Text>텍스트 3</Text>
-    </SafeAreaView>
-  );
-
-  return <SafeAreaView>{virtualDOM}</SafeAreaView>;
+  const array = new Array(11).fill(null).map((value, index) => (
+    <Text>
+      배열 {index} : {value}
+    </Text>
+  ));
+  return <SafeAreaView>{array}</SafeAreaView>;
 }
