@@ -15,16 +15,11 @@ export default function App() {
 
   const virtualDOM = (
     <SafeAreaView>
-      <Text>DOM 자체를 변수로 만들 수도 있다.</Text>
+      <Text>텍스트 1</Text>
+      <Text>텍스트 2</Text>
+      <Text>텍스트 3</Text>
     </SafeAreaView>
   );
 
-  const isLoading = true;
-  const children = isLoading ? (
-    <Text>is Loading이 true...</Text>
-  ) : (
-    <Text>is Loading이 false</Text>
-  );
-
-  return <SafeAreaView>{children}</SafeAreaView>;
+  return <SafeAreaView>{virtualDOM}</SafeAreaView>;
 }
