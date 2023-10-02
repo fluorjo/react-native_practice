@@ -10,7 +10,7 @@ import {LogBox} from 'react-native';
 export default function App() {
   console.error = error => error.apply;
   LogBox.ignoreAllLogs();
-  
+
   const textElement = React.createElement(Text, null, '가상 DOM 객체');
 
   const virtualDOM = (
@@ -19,11 +19,12 @@ export default function App() {
     </SafeAreaView>
   );
 
-  const isLoading = false;
-  return (
-    <SafeAreaView>
-      {isLoading && <Text>isLoading이 true일 때만 나온다. </Text>}
-      {!isLoading && <Text>isLoading이 false일 때만 나온다. </Text>}
-    </SafeAreaView>
+  const isLoading = true;
+  const children = isLoading ? (
+    <Text>is Loading이 true...</Text>
+  ) : (
+    <Text>is Loading이 false</Text>
   );
+
+  return <SafeAreaView>{children}</SafeAreaView>;
 }
