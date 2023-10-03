@@ -16,15 +16,15 @@ import {MD2Colors as Colors} from 'react-native-paper';
 
 const styles = StyleSheet.create({
   safeAreaView: {flex: 1, alignItems: 'center', justifyContent: 'center',
-  backgroundColor: Colors.blue600},
-  text: {fontSize: 20, color: Colors.blue100}
+  backgroundColor: Colors.white},
+  text: {fontSize: 20, color: Colors.blue900}
   })
   
 
 export default function App() {
   return (
     <SafeAreaView style={[styles.safeAreaView]}>
-      <Text style= {[styles.text]}>그리워하면 언젠가 만나게 되는 어느 영화와 같은 일들이 이뤄져 가기를</Text>
+      <Text style= {[styles.text]}>와 이제 좀 살 거 같다. </Text>
     </SafeAreaView>
   );
 }
