@@ -1,23 +1,31 @@
-//JSX 구문이 있는 타입스크립트 코드는 확장자가 .tsx다.
-
+//에러 화면 방지
+// console.error = error => error.apply;
+// LogBox.ignoreAllLogs();
+// LogBox.ignoreLogs(['Property ']);
+// LogBox.ignoreLogs(['it is un']);
+// LogBox.ignoreLogs(['The title']);
+// LogBox.ignoreLogs(['']);
+//
 //JSX 구문을 쓰려면 이 import가 필요.
 import React from 'react';
 
-import {Text, SafeAreaView} from 'react-native';
-
+import {Text, SafeAreaView, Button, Alert} from 'react-native';
+import {TouchableOpacity, TouchableHighlight} from 'react-native';
 import {LogBox, View} from 'react-native';
 
-//에러 화면 방지
-console.error = error => error.apply;
-LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(['Property ']);
-LogBox.ignoreLogs(['it is un']);
-//
-
+const onPress = () => Alert.alert('home pressed.', 'message');
 
 export default function App() {
   return (
-    <SafeAreaView/>
-
+    <SafeAreaView>
+      <Button title="home" onPress={onPress} />
+      <TouchableOpacity onPress={onPress}>
+        <Text>TouchableOpacity</Text>
+      </TouchableOpacity>
+      <TouchableHighlight onPress={onPress}>
+        <Text>TouchableHighlight</Text>
+      </TouchableHighlight>
+        <Text onPress={onPress}>text</Text>
+    </SafeAreaView>
   );
 }
