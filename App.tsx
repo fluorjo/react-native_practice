@@ -12,6 +12,7 @@ import React from 'react';
 import {Text, SafeAreaView, Button, Alert} from 'react-native';
 import {TouchableOpacity, TouchableHighlight} from 'react-native';
 import {LogBox, View} from 'react-native';
+import {TextInput} from 'react-native';
 
 const onPress = () => Alert.alert('home pressed.', 'message');
 
@@ -25,7 +26,14 @@ export default function App() {
       <TouchableHighlight onPress={onPress}>
         <Text>TouchableHighlight</Text>
       </TouchableHighlight>
-        <Text onPress={onPress}>text</Text>
+      <Text onPress={onPress}>text</Text>
+      <TextInput
+        placeholder="enter your name"
+        onChangeText={(text: string) => console.log(text)}
+        onFocus={() => console.log('onFocus')}
+        onBlur={() => console.log('onBlur')}
+        onEndEditing={() => console.log('onEndEditing')}
+      />
     </SafeAreaView>
   );
 }
