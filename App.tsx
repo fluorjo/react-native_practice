@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.green200,
     height: 40,
+    //이거 ios에서는 안 먹힘.
     padding:100
 
   },
@@ -34,7 +35,8 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: 'white',
     marginBottom: 10,
-    marginLeft: Platform.select({ios: 0, android: 0}),
+    //플랫폼에 따라 값을 다르게 해준다. 
+    marginLeft: Platform.select({ios: 20, android: 0}),
   },
 });
 
