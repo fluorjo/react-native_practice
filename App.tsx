@@ -27,6 +27,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
   text: {fontSize: 20, color: Colors.blue900},
+  box: {
+    width: '70%',
+    height: 100,
+    backgroundColor: 'white',
+    marginBottom: 10,
+    marginLeft: Platform.select({ios: 0, android: 0}),
+    padding:200
+  },
 });
 
 export default function App() {
@@ -34,6 +42,8 @@ export default function App() {
     <SafeAreaView style={[styles.safeAreaView]}>
       <Text style={[styles.text]}>와 이제 좀 살 거 같다. </Text>
       <Text style={[styles.text]}>height:{height} </Text>
+      <View style={[styles.box, {borderRadius: 10}]}/>  
+
     </SafeAreaView>
   );
 }
