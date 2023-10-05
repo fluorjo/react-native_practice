@@ -19,7 +19,14 @@ import {
 } from 'react-native';
 
 import * as D from './src/data';
-const text = `Almost before we knew it, we had left the ground.`;
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import {MD2Colors as Colors} from 'react-native-paper';
+
+const text = `Queen.`;
+
+const onIconPressed=()=>console.log('icon pressed')
 
 export default function App() {
   return (
@@ -34,6 +41,7 @@ export default function App() {
           <Text style={[styles.text, styles.semiBold]}>{text} [semi bold]</Text>
           <Text style={[styles.text, styles.bold]}>{text} [bold]</Text>
         </View>
+        <Icon name='home' size={50}color={Colors.black} onPress={onIconPressed}></Icon>
       </ImageBackground>
     </SafeAreaView>
   );
