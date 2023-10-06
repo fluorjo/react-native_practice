@@ -6,26 +6,24 @@ LogBox.ignoreLogs(['Property ']);
 LogBox.ignoreLogs(['it is un']);
 LogBox.ignoreLogs(['The title']);
 LogBox.ignoreLogs(['']);
-//import React from 'react';
-import {SafeAreaView, StyleSheet, FlatList, View} from 'react-native';
-import {MD2Colors as Colors} from 'react-native-paper';
-import Person from './src/copy/Person';
-import * as D from './src/data';
-const people: D.IPerson[] = D.makeArray(10).map(D.createRandomPerson);
+import React from 'react';
+import {StyleSheet, SafeAreaView, Text} from 'react-native';
+//import {useClock} from './src/hooks';
 
 export default function App() {
+  //  const time = useClock();
+  const time = new Date();
   return (
-    <SafeAreaView style={styles.flex}>
-      <FlatList
-        data={people}
-        renderItem={({item}) => <Person person={item} />}
-        keyExtractor={(item, index) => item.id}
-        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-      />
+    <SafeAreaView style={styles.safeAreaView}>
+      <Text style={[styles.digitFont, styles.time]}>
+        {time.toLocaleTimeString()}
+      </Text>
+      <Text style={styles.digitFont}>{time.toLocaleDateString()}</Text>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  flex: {flex: 1},
-  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
+  safeAreaView: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  digitFont: {fontFamily: 'MajorMonoDisplay-Regular', fontWeight: '400'},
+  time: {fontSize: 50},
 });
