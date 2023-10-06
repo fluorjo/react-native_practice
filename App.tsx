@@ -1,59 +1,31 @@
 //에러 화면 방지
+import {LogBox} from 'react-native';
 console.error = error => error.apply;
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(['Property ']);
 LogBox.ignoreLogs(['it is un']);
 LogBox.ignoreLogs(['The title']);
 LogBox.ignoreLogs(['']);
-//
-//JSX 구문을 쓰려면 이 import가 필요.
-import React from 'react';
-import {LogBox, Platform, View} from 'react-native';
-
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ImageBackground,
-  Image,
-} from 'react-native';
-
-import * as D from './src/data';
-
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+//import React from 'react';
+import {SafeAreaView, StyleSheet, FlatList, View} from 'react-native';
 import {MD2Colors as Colors} from 'react-native-paper';
-
-import TopBar from './src/screens/TopBar';
-import Content from './src/screens/Content';
-import BottomBar from './src/screens/BottomBar';
+import Person from './src/copy/Person';
+import * as D from './src/data';
+const people: D.IPerson[] = D.makeArray(10).map(D.createRandomPerson);
 
 export default function App() {
-  const iconPressed = () => Alert.alert('Icon pressed.');
-
   return (
-    <>
-
-    <SafeAreaView style={[styles.flex]}>
-      <TopBar />
-      <Content />
-      <BottomBar />
+    <SafeAreaView style={styles.flex}>
+      <FlatList
+        data={people}
+        renderItem={({item}) => <Person person={item} />}
+        keyExtractor={(item, index) => item.id}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+      />
     </SafeAreaView>
-          <View style={[styles.absoluteView]}>
-          <Icon name="feather" size={50} color="white" onPress={iconPressed} />
-        </View>
-        </>
-
   );
 }
 const styles = StyleSheet.create({
-  flex: {flex: 1, backgroundColor: Colors.lightBlue100},
-  absoluteView: {
-    backgroundColor: Colors.purple900,
-    position: 'absolute',
-    right: 30,
-    bottom: Platform.select({ios: 100, android: 80}),
-    padding: 10,
-    borderRadius: 35,
-  },
+  flex: {flex: 1},
+  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
 });
