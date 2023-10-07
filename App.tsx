@@ -8,11 +8,11 @@ LogBox.ignoreLogs(['The title']);
 LogBox.ignoreLogs(['']);
 import React from 'react';
 import {StyleSheet, SafeAreaView, Text} from 'react-native';
-//import {useClock} from './src/hooks';
+import {useClock} from './src/hooks';
 
 export default function App() {
-  //  const time = useClock();
-  const time = new Date();
+  const time = useClock();
+  //const time = new Date();
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Text style={[styles.digitFont, styles.time]}>
