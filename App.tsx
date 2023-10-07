@@ -1,60 +1,59 @@
-import React, {useMemo, useState} from 'react';
-import type {FC} from 'react';
-// prettier-ignore
-import {SafeAreaView, StyleSheet, FlatList, View, ScrollView, Dimensions, Text}
-from 'react-native'
+//에러 화면 방지
+import {LogBox} from 'react-native';
+console.error = error => error.apply;
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['Property ']);
+LogBox.ignoreLogs(['it is un']);
+LogBox.ignoreLogs(['The title']);
+LogBox.ignoreLogs(['']);
+//
+import React, {useState, useMemo, useCallback} from 'react';
+import {StyleSheet, SafeAreaView, View, Text} from 'react-native';
+
 import {MD2Colors as Colors} from 'react-native-paper';
+import LifeCycle from './src/screens/LifeCycle';
+import Timer from './src/screens/Timer';
+import Interval from './src/screens/Interval';
+import Fetch from './src/screens/Fetch';
 
-import PersonUsingValueState from './src/screens/PersonUsingValueState';
-import PersonUsingObjectState from './src/screens/PersonUsingObjectState';
-import PersonUsingPassingState from './src/screens/PersonUsingPassingState';
-import * as D from './src/data';
-import TopBar from './src/screens/TopBar';
-
-const {width} = Dimensions.get('window');
-
-type PersonInformation = {
-  title: string;
-  Component: FC<any>;
-};
-const personInfomations: PersonInformation[] = [
-  {title: 'PersonUsingValueState', Component: PersonUsingValueState},
-  {title: 'PersonUsingObjectState', Component: PersonUsingObjectState},
-  {title: 'PersonUsingPassingState', Component: PersonUsingPassingState},
-];
-const numberOfComponents = personInfomations.length;
 
 export default function App() {
-  const [people, setPeople] = useState<D.IPerson[]>([]);
-  const children = useMemo(
+  const selects = useMemo(
+    () => ['lifeCycle', 'timer', 'interval', 'fetch'],
+    [],
+  );
+  const [select, setSelect] = useState<string>(selects[0]);
+
+  //text의 타입 명시적으로 지정하기.
+  const onPress = useCallback((text: string) => () => setSelect(text), []);
+  const buttons = useMemo(
     () =>
-      personInfomations.map(({title, Component}: PersonInformation) => (
-        <View style={{flex: 1}} key={title}>
-          <Text style={[styles.text]}>{title}</Text>
-          <FlatList
-            data={people}
-            renderItem={({item}) => <Component person={item} />}
-            keyExtractor={(item, index) => item.id}
-            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-          />
-        </View>
+      selects.map(text => (
+        <Text key={text} onPress={onPress(text)} style={styles.button}>
+          {text}
+        </Text>
       )),
-    [people.length],
+    [],
   );
   return (
-    <SafeAreaView style={styles.flex}>
-      <TopBar setPeople={setPeople} />
-      <ScrollView
-        horizontal
-        contentContainerStyle={styles.horizontalScrollView}>
-        {children}
-      </ScrollView>
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.topBar}>{buttons}</View>
+      {select == 'lifeCycle' && <LifeCycle />}
+      {select == 'timer' && <Timer />}
+      {select == 'interval' && <Interval />}
+      {select == 'fetch' && <Fetch />}
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
-  flex: {flex: 1},
-  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
-  horizontalScrollView: {width: width * numberOfComponents},
-  text: {fontSize: 24, textAlign: 'center'},
+  safeAreaView: {flex: 1},
+  topBar: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 5,
+    justifyContent: 'space-between',
+    backgroundColor: Colors.lightBlue500,
+  },
+  button: {fontSize: 20, color: 'white'},
 });
