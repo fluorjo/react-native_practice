@@ -1,29 +1,60 @@
-//에러 화면 방지
-import {LogBox} from 'react-native';
-console.error = error => error.apply;
-LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(['Property ']);
-LogBox.ignoreLogs(['it is un']);
-LogBox.ignoreLogs(['The title']);
-LogBox.ignoreLogs(['']);
-import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
-import {useClock} from './src/hooks';
+import React, {useMemo, useState} from 'react';
+import type {FC} from 'react';
+// prettier-ignore
+import {SafeAreaView, StyleSheet, FlatList, View, ScrollView, Dimensions, Text}
+from 'react-native'
+import {MD2Colors as Colors} from 'react-native-paper';
+
+import PersonUsingValueState from './src/screens/PersonUsingValueState';
+import PersonUsingObjectState from './src/screens/PersonUsingObjectState';
+import PersonUsingPassingState from './src/screens/PersonUsingPassingState';
+import * as D from './src/data';
+import TopBar from './src/screens/TopBar';
+
+const {width} = Dimensions.get('window');
+
+type PersonInformation = {
+  title: string;
+  Component: FC<any>;
+};
+const personInfomations: PersonInformation[] = [
+  {title: 'PersonUsingValueState', Component: PersonUsingValueState},
+  {title: 'PersonUsingObjectState', Component: PersonUsingObjectState},
+  {title: 'PersonUsingPassingState', Component: PersonUsingPassingState},
+];
+const numberOfComponents = personInfomations.length;
 
 export default function App() {
-  const time = useClock();
-  //const time = new Date();
+  const [people, setPeople] = useState<D.IPerson[]>([]);
+  const children = useMemo(
+    () =>
+      personInfomations.map(({title, Component}: PersonInformation) => (
+        <View style={{flex: 1}} key={title}>
+          <Text style={[styles.text]}>{title}</Text>
+          <FlatList
+            data={people}
+            renderItem={({item}) => <Component person={item} />}
+            keyExtractor={(item, index) => item.id}
+            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+          />
+        </View>
+      )),
+    [people.length],
+  );
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Text style={[styles.digitFont, styles.time]}>
-        {time.toLocaleTimeString()}
-      </Text>
-      <Text style={styles.digitFont}>{time.toLocaleDateString()}</Text>
+    <SafeAreaView style={styles.flex}>
+      <TopBar setPeople={setPeople} />
+      <ScrollView
+        horizontal
+        contentContainerStyle={styles.horizontalScrollView}>
+        {children}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  safeAreaView: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  digitFont: {fontFamily: 'MajorMonoDisplay-Regular', fontWeight: '400'},
-  time: {fontSize: 50},
+  flex: {flex: 1},
+  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
+  horizontalScrollView: {width: width * numberOfComponents},
+  text: {fontSize: 24, textAlign: 'center'},
 });
