@@ -23,6 +23,7 @@ type RootStackParamList = {
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 type DetailsScreenProps = NativeStackScreenProps<ParamListBase, 'Details'>;
 
+//{navigation}<-이게 매개변수. 이거의 타입이 HomeScreenprops라고 선언.
 function HomeScreen({navigation}: HomeScreenProps) {
   const onClick = useCallback(() => {
     navigation.navigate('Details');
