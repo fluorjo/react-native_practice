@@ -7,53 +7,66 @@ LogBox.ignoreLogs(['it is un']);
 LogBox.ignoreLogs(['The title']);
 LogBox.ignoreLogs(['']);
 //
-import React, {useState, useMemo, useCallback} from 'react';
-import {StyleSheet, SafeAreaView, View, Text} from 'react-native';
+import * as React from 'react';
+import {NavigationContainer, ParamListBase} from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {Text, TouchableHighlight, View} from 'react-native';
+import {useCallback} from 'react';
 
-import {MD2Colors as Colors} from 'react-native-paper';
-import LifeCycle from './src/screens/LifeCycle';
-import Timer from './src/screens/Timer';
-import Interval from './src/screens/Interval';
-import Fetch from './src/screens/Fetch';
+type RootStackParamList = {
+  Home: undefined;
+  Details: undefined;
+};
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type DetailsScreenProps = NativeStackScreenProps<ParamListBase, 'Details'>;
 
+function HomeScreen({navigation}: HomeScreenProps) {
+  const onClick = useCallback(() => {
+    navigation.navigate('Details');
+  }, [navigation]);
 
-export default function App() {
-  const selects = useMemo(
-    () => ['lifeCycle', 'timer', 'interval', 'fetch'],
-    [],
-  );
-  const [select, setSelect] = useState<string>(selects[0]);
-
-  //text의 타입 명시적으로 지정하기.
-  const onPress = useCallback((text: string) => () => setSelect(text), []);
-  const buttons = useMemo(
-    () =>
-      selects.map(text => (
-        <Text key={text} onPress={onPress(text)} style={styles.button}>
-          {text}
-        </Text>
-      )),
-    [],
-  );
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.topBar}>{buttons}</View>
-      {select == 'lifeCycle' && <LifeCycle />}
-      {select == 'timer' && <Timer />}
-      {select == 'interval' && <Interval />}
-      {select == 'fetch' && <Fetch />}
-    </SafeAreaView>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <TouchableHighlight onPress={onClick}>
+              <Text>Home Screen</Text>
+            </TouchableHighlight>
+          </View>
   );
 }
 
-const styles = StyleSheet.create({
-  safeAreaView: {flex: 1},
-  topBar: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 5,
-    justifyContent: 'space-between',
-    backgroundColor: Colors.lightBlue500,
-  },
-  button: {fontSize: 20, color: 'white'},
-});
+function DetailsScreen({navigation}: DetailsScreenProps) {
+  const onClick = useCallback(() => {
+    navigation.navigate('Home');
+  }, [navigation]);
+
+  return (
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <TouchableHighlight onPress={onClick}>
+              <Text>Details Screen</Text>
+            </TouchableHighlight>
+          </View>
+  );
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+function App() {
+  return (
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen
+                      name="Home"
+                      component={HomeScreen}
+                      options={{title: 'Overview'}}
+              />
+              <Stack.Screen name="Details">
+                {props => <DetailsScreen {...props} />}
+              </Stack.Screen>
+            </Stack.Navigator>
+          </NavigationContainer>
+  );
+}
+
+export default App;
