@@ -30,11 +30,14 @@ function HomeScreen({navigation}: HomeScreenProps) {
   }, [navigation]);
 
   return (
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <>
+          <View style={{flex: 1, backgroundColor: 'yellow' ,alignItems: 'center', justifyContent: 'center'}}>
             <TouchableHighlight onPress={onClick}>
               <Text>Home Screen</Text>
             </TouchableHighlight>
           </View>
+          <View style={{flex: 2, backgroundColor: 'green' ,alignItems: 'center', justifyContent: 'center'}}></View>
+          </>
   );
 }
 
