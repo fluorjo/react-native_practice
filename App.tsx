@@ -1,3 +1,14 @@
+//에러 화면 방지
+import {LogBox} from 'react-native';
+console.error = error => error.apply;
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['Property ']);
+LogBox.ignoreLogs(['it is un']);
+LogBox.ignoreLogs(['The title']);
+LogBox.ignoreLogs(['']);
+//
+
+
 import * as React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -25,7 +36,7 @@ const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(true)
+  const [isLoggedIn, setLoggedIn] = useState(false)
   return (
     <NavigationContainer>
       {isLoggedIn ? (
@@ -38,7 +49,7 @@ function App() {
           <Tab.Screen
             name="Delivery"
             component={Delivery}
-            options={{headerShown: true}}
+            options={{headerShown: false}}
           />
           <Tab.Screen
             name="Settings"
