@@ -25,7 +25,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(true);
   return (
     <NavigationContainer>
       {isLoggedIn ? (
@@ -38,7 +38,7 @@ function App() {
           <Tab.Screen
             name="Delivery"
             component={Delivery}
-            options={{headerShown: false}}
+            options={{headerShown: true}}
           />
           <Tab.Screen
             name="Settings"
