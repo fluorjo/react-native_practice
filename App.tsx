@@ -17,6 +17,7 @@ import {Text, TouchableHighlight, View} from 'react-native';
 import {useCallback} from 'react';
 
 type RootStackParamList = {
+  //페이지 목록과 parameter를 넣는다. 넣을 거 없으면 undefined.
   Home: undefined;
   Details: undefined;
 };
