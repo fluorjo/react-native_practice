@@ -12,6 +12,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import {RootStackParamList} from '../../AppInner'
 import DismissKeyboardView from '../components/DismissKeyboardView'
 import axios, {Axios, AxiosError, AxiosResponse} from 'axios'
+import {ActivityIndicator} from 'react-native'
 
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>
 
@@ -34,6 +35,10 @@ function SignUp({navigation}: SignUpScreenProps) {
     setPassword(text.trim())
   }, [])
   const onSubmit = useCallback(async () => {
+    if (loading) {
+      //로딩 중이면 요청 안 가게 막는 것.
+      return
+    }
     if (!email || !email.trim()) {
       return Alert.alert('알림', '이메일을 입력해주세요.')
     }
@@ -61,7 +66,7 @@ function SignUp({navigation}: SignUpScreenProps) {
       setLoading(true)
 
       const response = await axios.post('/user', {email, name, password})
-      console.log(response)
+      console.log(response.data)
       Alert.alert('알림', '회원가입이 완료됐습니다. ')
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -140,9 +145,13 @@ function SignUp({navigation}: SignUpScreenProps) {
               ? StyleSheet.compose(styles.loginButton, styles.loginButtonActive)
               : styles.loginButton
           }
-          disabled={!canGoNext}
+          disabled={!canGoNext || loading}
           onPress={onSubmit}>
-          <Text style={styles.loginButtonText}>회원가입</Text>
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.loginButtonText}>회원가입</Text>
+          )}
         </Pressable>
       </View>
     </DismissKeyboardView>
