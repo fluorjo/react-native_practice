@@ -16,6 +16,7 @@ import axios from 'axios'
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 function SignUp({navigation}: SignUpScreenProps) {
+  const [loading,setLoading]=useState(false)
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -57,13 +58,24 @@ function SignUp({navigation}: SignUpScreenProps) {
     }
     console.log(email, name, password);
     try {
-
-     const response= await axios.post('/user', data:{email, name, password})
-     console.log(response)
-
+      setLoading(true)
+      
+      const response= await axios.post('/user', {email, name, password})
+      console.log(response)
+      Alert.alert(
+        '알림',
+        '회원가입이 완료됐습니다. ',
+      );
     } catch (error) {
       console.error(error.response)
+if(error.response){
+  Alert.alert(
+    '알림',
+error.response.data.message,
+  );
+}
     }finally{
+      setLoading(false)
 
     }
     Alert.alert('알림', '회원가입 되었습니다.');
