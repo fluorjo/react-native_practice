@@ -1,29 +1,26 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
-import EncryptedStorage from 'react-native-encrypted-storage';
+import EncryptedStorage from 'react-native-encrypted-storage'
 
 import React, {useCallback, useRef, useState} from 'react'
 import {Alert, Pressable, StyleSheet, Text, TextInput, View} from 'react-native'
 import {RootStackParamList} from '../../AppInner'
 import DismissKeyboardView from '../components/DismissKeyboardView'
-import axios, {AxiosError, AxiosResponse} from 'axios';
-import Config from 'react-native-config';
-import {useAppDispatch} from '../store';
+import axios, {AxiosError, AxiosResponse} from 'axios'
+import Config from 'react-native-config'
+import {useAppDispatch} from '../store'
 
-import userSlice from '../slices/user';
-
-
+import userSlice from '../slices/user'
 
 //app.tsx에서 paramlist를 한정하고 여기서 타입을 지정해줬기 때문에 허용된 곳으로만 갈 수 있게 설정 가능.
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>
 
 function SignIn({navigation}: SignInScreenProps) {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
 
   const onChangeEmail = useCallback((text: React.SetStateAction<string>) => {
     setEmail(text)
@@ -34,7 +31,7 @@ function SignIn({navigation}: SignInScreenProps) {
 
   const onSubmit = useCallback(async () => {
     if (loading) {
-      return;
+      return
     }
     if (!email || !email.trim()) {
       return Alert.alert('알림', '이메일을 입력해주세요')
@@ -43,24 +40,25 @@ function SignIn({navigation}: SignInScreenProps) {
       return Alert.alert('알림', '비밀번호를 입력해주세요')
     }
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await axios.post(`${Config.API_URL}/login`, {
         email,
         password,
-      });
-      console.log(response.data);
-      Alert.alert('알림', '로그인 되었습니다.');
+      })
+      console.log(response.data)
+      Alert.alert('알림', '로그인 되었습니다.')
       dispatch(
         userSlice.actions.setUser({
           name: response.data.data.name,
           email: response.data.data.email,
           accessToken: response.data.data.accessToken,
+          refreshToken: response.data.data.refreshToken,
         }),
-      );
+      )
       await EncryptedStorage.setItem(
         'refreshToken',
         response.data.data.refreshToken,
-      );
+      )
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError: AxiosError = error
@@ -74,9 +72,9 @@ function SignIn({navigation}: SignInScreenProps) {
         }
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [loading, dispatch, email, password]);
+  }, [loading, dispatch, email, password])
 
   const toSignUp = useCallback(() => {
     navigation.navigate('SignUp')
